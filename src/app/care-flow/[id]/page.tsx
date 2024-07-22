@@ -23,8 +23,15 @@ import {
   Select,
 } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
+import { PatientInfo } from "../../../components/PatientInfo";
 
 export default function Page({ params }: { params: { id: string } }) {
+  const [releaseIds, setReleaseIds] = useState<string[]>([]);
+  const [patientId, setPatientId] = useState<string | undefined>(undefined);
+  const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
+    null
+  );
+
   const { data: pathwayData, loading: loadingPathway } = usePathway(params.id);
   const filters = useMemo(
     () => ({
@@ -49,17 +56,17 @@ export default function Page({ params }: { params: { id: string } }) {
     filters: filters,
   });
 
-  const [releaseIds, setReleaseIds] = useState<string[]>([]);
-
   useEffect(() => {
     if (pathwayData?.release_id) {
       setReleaseIds([pathwayData.release_id]);
     }
   }, [pathwayData]);
 
-  const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
-    null
-  );
+  useEffect(() => {
+    if (pathwayData?.patient_id) {
+      setPatientId(pathwayData.patient_id);
+    }
+  }, [pathwayData]);
 
   const {
     data: stakeholders,
@@ -87,39 +94,12 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="flex items-center gap-2 mb-4">
           <Button variant="outline" asChild>
             <a href="#" title="Task List">
-              <CaretLeftIcon /> Task List
+              <CaretLeftIcon /> Go back
             </a>
           </Button>
-
-          <div className="flex flex-col">
-            <Text size="2">
-              <Strong>Task: Enroll patient</Strong>
-            </Text>
-            <DueDate pathway_id={params.id} />
-          </div>
         </div>
         {/* Patient info */}
-        <div>
-          <DataList.Root
-            orientation={{ initial: "vertical", sm: "horizontal" }}
-            className="border border-dashed rounded-md p-2"
-          >
-            <DataList.Item>
-              <DataList.Label minWidth="88px">Name</DataList.Label>
-              <DataList.Value>Vlad Moroz</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label minWidth="88px">Mobile phone</DataList.Label>
-              <DataList.Value>+1 866 43 38 22</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label minWidth="88px">Email</DataList.Label>
-              <DataList.Value>
-                <Link href="mailto:vlad@workos.com">vlad@workos.com</Link>
-              </DataList.Value>
-            </DataList.Item>
-          </DataList.Root>
-        </div>
+        {patientId && <PatientInfo patientId={patientId} />}
         {/* Timeline */}
         <div className="mt-8">
           <div className="flex justify-between">

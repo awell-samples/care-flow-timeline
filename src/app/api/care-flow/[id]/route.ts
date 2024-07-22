@@ -28,6 +28,9 @@ export async function GET(
         complete_date: true,
         status: true,
         status_explanation: true,
+        patient: {
+          id: true,
+        },
       },
     },
   });

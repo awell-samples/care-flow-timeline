@@ -1,22 +1,15 @@
+import { Pathway } from "@awell-health/awell-sdk";
 import { useState, useEffect, useCallback } from "react";
 
 type UsePathwayHook = (pathwayId: string) => {
-  data: {
-    pathway_definition_id?: string;
-    release_id?: string;
-    version?: number;
-  };
+  data?: Pathway;
   error: null | Error;
   loading: boolean;
   refresh: () => void;
 };
 
 export const usePathway: UsePathwayHook = (pathwayId) => {
-  const [data, setData] = useState<{
-    pathway_definition_id?: string;
-    release_id?: string;
-    version?: number;
-  }>({});
+  const [data, setData] = useState<Pathway>(undefined);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -30,11 +23,8 @@ export const usePathway: UsePathwayHook = (pathwayId) => {
       if (error || !data.success) {
         throw new Error("Failed to fetch");
       }
-      const pathwayData = data.pathway as {
-        pathway_definition_id: string;
-        release_id: string;
-        version: number;
-      };
+      const pathwayData = data.pathway as Pathway;
+
       setData(pathwayData);
     } catch (error) {
       setError(error as Error);
