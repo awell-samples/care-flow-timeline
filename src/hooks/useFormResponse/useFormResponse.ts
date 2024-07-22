@@ -43,7 +43,7 @@ export const useFormResponse: UseFormResponseHook = ({
     };
 
     fetchData();
-  }, []);
+  }, [pathwayId, activityId]);
 
   return { data, loading, error };
 };

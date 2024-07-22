@@ -41,6 +41,8 @@ const AccordionTrigger = React.forwardRef<
   </div>
 ));
 
+AccordionTrigger.displayName = "AccordionTrigger";
+
 const AccordionContent = React.forwardRef<
   HTMLDivElement,
   AccordionContentProps
@@ -56,6 +58,8 @@ const AccordionContent = React.forwardRef<
     </div>
   </Accordion.Content>
 ));
+
+AccordionContent.displayName = "AccordionContent";
 
 export const ClinicalNote: React.FC<ClinicalNoteProps> = ({ id }) => {
   const { data, loading, error } = useClinicalNote(id);
