@@ -23,10 +23,8 @@ export const useStakeholdersByReleaseIds: UseStakeholdersByReleaseIdsHook = ({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const url = new URL(`/api/stakeholders/by-release-ids`);
-        url.search = new URLSearchParams({
-          release_ids: releaseIds.join(","),
-        }).toString();
+        const url = `/api/stakeholders/by-release-ids?release_ids=${releaseIds.join(",")}`;
+
         const resp = await fetch(url);
         const { data, error } = await resp.json();
         if (error || !data.success) {

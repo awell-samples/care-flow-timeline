@@ -8,7 +8,7 @@ export async function GET(
 ) {
   const searchParams = request.nextUrl.searchParams;
 
-  const releaseIdsAsString = searchParams.get("releaseIds");
+  const releaseIdsAsString = searchParams.get("release_ids");
   const releaseIds = releaseIdsAsString.split(",");
 
   const sdk = new AwellSdk({
