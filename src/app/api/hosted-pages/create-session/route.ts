@@ -1,7 +1,7 @@
 import { AwellSdk } from "@awell-health/awell-sdk";
 
 export async function POST(request: Request) {
-  const { stakeholderId, pathwayId } = await request.json();
+  const { stakeholderId, careFlowId } = await request.json();
 
   const sdk = new AwellSdk({
     apiUrl: process.env.AWELL_API_URL,
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     startHostedActivitySession: {
       __args: {
         input: {
-          pathway_id: pathwayId,
+          pathway_id: careFlowId,
           stakeholder_id: stakeholderId,
         },
       },

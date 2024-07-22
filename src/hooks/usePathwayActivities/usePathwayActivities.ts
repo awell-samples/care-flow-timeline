@@ -2,10 +2,10 @@ import { Activity } from "@awell-health/awell-sdk";
 import { useState, useEffect, useCallback } from "react";
 
 type UsePathwayActivitiesHook = ({
-  pathwayId,
+  careFlowId,
   filters,
 }: {
-  pathwayId: string;
+  careFlowId: string;
   filters?: {
     activity_status?: string[];
     activity_type?: string[];
@@ -18,7 +18,7 @@ type UsePathwayActivitiesHook = ({
 };
 
 export const usePathwayActivities: UsePathwayActivitiesHook = ({
-  pathwayId,
+  careFlowId,
   filters,
 }) => {
   const [data, setData] = useState<Activity[]>([]);
@@ -28,7 +28,7 @@ export const usePathwayActivities: UsePathwayActivitiesHook = ({
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const url = `/api/care-flow/${pathwayId}/activities`;
+      const url = `/api/care-flow/${careFlowId}/activities`;
       const resp = await fetch(url, { cache: "no-store" });
       const { data, error } = await resp.json();
       if (error || !data.success) {
@@ -60,7 +60,7 @@ export const usePathwayActivities: UsePathwayActivitiesHook = ({
     } finally {
       setLoading(false);
     }
-  }, [pathwayId, filters]);
+  }, [careFlowId, filters]);
 
   useEffect(() => {
     fetchData();

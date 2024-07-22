@@ -17,7 +17,7 @@ export const CompleteTask: React.FC<CompleteTaskProps> = ({
   const stakeholderId = getStakeholderId(activity);
   const handleCompleteTask = async () => {
     const res = await createSession({
-      pathwayId: activity.stream_id,
+      careFlowId: activity.stream_id,
       stakeholderId,
     });
 

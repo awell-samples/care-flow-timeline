@@ -1,9 +1,5 @@
 "use client";
-import {
-  Timeline,
-  TimelineElement,
-  DueDate,
-} from "../../../components/Timeline";
+import { Timeline, TimelineElement } from "../../../components/Timeline";
 import {
   usePathway,
   usePathwayActivities,
@@ -11,17 +7,7 @@ import {
 } from "../../../hooks";
 import { enumActivityObjectType } from "@awell-health/awell-sdk";
 import { CaretLeftIcon } from "@radix-ui/react-icons";
-import {
-  Card,
-  Text,
-  DataList,
-  Link,
-  Button,
-  Strong,
-  Heading,
-  Spinner,
-  Select,
-} from "@radix-ui/themes";
+import { Card, Button, Heading, Spinner, Select } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { PatientInfo } from "../../../components/PatientInfo";
 
@@ -32,7 +18,7 @@ export default function Page({ params }: { params: { id: string } }) {
     null
   );
 
-  const { data: pathwayData, loading: loadingPathway } = usePathway(params.id);
+  const { data: careFlowData, loading: loadingPathway } = usePathway(params.id);
   const filters = useMemo(
     () => ({
       activity_type: [
@@ -52,21 +38,21 @@ export default function Page({ params }: { params: { id: string } }) {
     error: activitiesError,
     refresh,
   } = usePathwayActivities({
-    pathwayId: params.id,
+    careFlowId: params.id,
     filters: filters,
   });
 
   useEffect(() => {
-    if (pathwayData?.release_id) {
-      setReleaseIds([pathwayData.release_id]);
+    if (careFlowData?.release_id) {
+      setReleaseIds([careFlowData.release_id]);
     }
-  }, [pathwayData]);
+  }, [careFlowData]);
 
   useEffect(() => {
-    if (pathwayData?.patient_id) {
-      setPatientId(pathwayData.patient_id);
+    if (careFlowData?.patient_id) {
+      setPatientId(careFlowData.patient_id);
     }
-  }, [pathwayData]);
+  }, [careFlowData]);
 
   const {
     data: stakeholders,

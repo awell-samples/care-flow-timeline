@@ -109,7 +109,7 @@ export const TimelineElement: React.FC<TimelineElementProps> = ({
           <div className="mt-4 mb-2">
             <FormResults
               activityId={activity.id}
-              pathwayId={activity.stream_id}
+              careFlowId={activity.stream_id}
               formQuestions={activity?.form?.questions}
             />
           </div>

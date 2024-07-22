@@ -2,10 +2,10 @@ import { useState } from "react";
 
 type UseHostedPagesActivitySessionHook = () => {
   createSession: ({
-    pathwayId,
+    careFlowId,
     stakeholderId,
   }: {
-    pathwayId: string;
+    careFlowId: string;
     stakeholderId: string;
   }) => Promise<string | undefined>;
   loading: boolean;
@@ -17,10 +17,10 @@ export const useHostedPagesActivitySession: UseHostedPagesActivitySessionHook =
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
     const createSession = async ({
-      pathwayId,
+      careFlowId,
       stakeholderId,
     }: {
-      pathwayId: string;
+      careFlowId: string;
       stakeholderId: string;
     }) => {
       setLoading(true);
@@ -32,7 +32,7 @@ export const useHostedPagesActivitySession: UseHostedPagesActivitySessionHook =
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            pathwayId,
+            pathwayId: careFlowId,
             stakeholderId,
           }),
         });

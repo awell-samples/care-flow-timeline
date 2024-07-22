@@ -9,7 +9,7 @@ import { Card, Heading, Spinner, Table } from "@radix-ui/themes";
 import { isEmpty } from "lodash";
 
 interface FormResultsProps {
-  pathwayId: string;
+  careFlowId: string;
   activityId: string;
   formQuestions?: Question[];
 }
@@ -30,10 +30,10 @@ const renderAnswer = (
 
 export const FormResults: React.FC<FormResultsProps> = ({
   formQuestions = [],
-  pathwayId,
+  careFlowId,
   activityId,
 }) => {
-  const { data, loading, error } = useFormResponse({ pathwayId, activityId });
+  const { data, loading, error } = useFormResponse({ careFlowId, activityId });
 
   return (
     <Card>

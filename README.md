@@ -4,11 +4,16 @@ Learn how to render a timeline for a care flow and interact with different types
 
 Built with [NextJS](https://nextjs.org/), [Tailwind](https://tailwindcss.com/), and [RadixUI](radix-ui.com). While this example uses NextJS, Tailwind, and RadixUI, these can be easily replaced with other JavaScript/React stacks if preferred.
 
+<div style="padding: 1rem 2rem; background: #fff; border-radius: 8px; margin: 0 auto; max-width: 600px;">
+    <img src="https://res.cloudinary.com/da7x4rzl4/image/upload/v1721679813/Developer%20portal/github-timeline.png" alt="Timeline" />
+</div>
+
 **Features**:
 
 - Display patient information on top of the page
 - Chronologically display activities of a single care flow
 - Complete activities with Hosted Pages
+- Render completed activities inline
 - Filter activities by stakeholders
 
 ## Demo

@@ -1,14 +1,14 @@
 import { Pathway } from "@awell-health/awell-sdk";
 import { useState, useEffect, useCallback } from "react";
 
-type UsePathwayHook = (pathwayId: string) => {
+type UsePathwayHook = (id: string) => {
   data?: Pathway;
   error: null | Error;
   loading: boolean;
   refresh: () => void;
 };
 
-export const usePathway: UsePathwayHook = (pathwayId) => {
+export const usePathway: UsePathwayHook = (id) => {
   const [data, setData] = useState<Pathway>(undefined);
 
   const [loading, setLoading] = useState(true);
@@ -17,21 +17,21 @@ export const usePathway: UsePathwayHook = (pathwayId) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const url = `/api/care-flow/${pathwayId}`;
+      const url = `/api/care-flow/${id}`;
       const resp = await fetch(url);
       const { data, error } = await resp.json();
       if (error || !data.success) {
         throw new Error("Failed to fetch");
       }
-      const pathwayData = data.pathway as Pathway;
+      const careFlowData = data.pathway as Pathway;
 
-      setData(pathwayData);
+      setData(careFlowData);
     } catch (error) {
       setError(error as Error);
     } finally {
       setLoading(false);
     }
-  }, [pathwayId]);
+  }, [id]);
 
   useEffect(() => {
     fetchData();

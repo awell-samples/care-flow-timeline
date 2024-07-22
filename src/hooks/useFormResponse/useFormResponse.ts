@@ -2,10 +2,10 @@ import { Answer } from "@awell-health/awell-sdk";
 import { useState, useEffect } from "react";
 
 type UseFormResponseHook = ({
-  pathwayId,
+  careFlowId,
   activityId,
 }: {
-  pathwayId: string;
+  careFlowId: string;
   activityId: string;
 }) => {
   data: Answer[];
@@ -14,7 +14,7 @@ type UseFormResponseHook = ({
 };
 
 export const useFormResponse: UseFormResponseHook = ({
-  pathwayId,
+  careFlowId,
   activityId,
 }) => {
   const [data, setData] = useState<Answer[]>([]);
@@ -25,7 +25,7 @@ export const useFormResponse: UseFormResponseHook = ({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const url = `/api/care-flow/${pathwayId}/form-response/${activityId}`;
+        const url = `/api/care-flow/${careFlowId}/form-response/${activityId}`;
         const resp = await fetch(url);
         const { data, error } = await resp.json();
         if (error || !data.success) {
@@ -43,7 +43,7 @@ export const useFormResponse: UseFormResponseHook = ({
     };
 
     fetchData();
-  }, [pathwayId, activityId]);
+  }, [careFlowId, activityId]);
 
   return { data, loading, error };
 };
