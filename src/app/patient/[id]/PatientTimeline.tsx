@@ -44,17 +44,20 @@ export const PatientTimeline: FC<PatientTimelineProps> = ({
   }
 
   return (
-    <Timeline>
-      {activities.map((activity) => (
-        <TimelineElement
-          key={activity.id}
-          activity={activity}
-          refresh={refreshActivities}
-          colorClass={
-            colorClasses.find((c) => c.id === activity.stream_id).colorClass
-          }
-        />
-      ))}
-    </Timeline>
+    <div className="mb-4">
+      <Timeline>
+        {activities.map((activity) => (
+          <TimelineElement
+            key={activity.id}
+            activity={activity}
+            refresh={refreshActivities}
+            colorClass={
+              colorClasses.find((c) => c.id === activity.stream_id).colorClass
+            }
+            renderColorIndicatorForLastItem={true}
+          />
+        ))}
+      </Timeline>
+    </div>
   );
 };

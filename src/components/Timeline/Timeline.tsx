@@ -15,12 +15,14 @@ interface TimelineElementProps {
   activity: Activity;
   colorClass?: string;
   refresh: () => void;
+  renderColorIndicatorForLastItem?: boolean;
 }
 
 export const TimelineElement: React.FC<TimelineElementProps> = ({
   activity,
   colorClass,
   refresh,
+  renderColorIndicatorForLastItem = false,
 }) => {
   const getActivityTitle = () => {
     const title = activity?.action_component?.title ?? "Unsupported title";
@@ -85,7 +87,7 @@ export const TimelineElement: React.FC<TimelineElementProps> = ({
       {/* Vertical line (::before) ~ Date ~ Title ~ Circle marker (::after) */}
       <div
         className={clsx(
-          "flex flex-col items-start mb-1 group-last:before:hidden before:absolute before:left-2 before:h-full before:px-[1.5px] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 after:w-2 after:h-2 after:border-4 after:box-content after:border-slate-50 after:rounded-full after:-translate-x-1/2 after:translate-y-1.5",
+          "flex flex-col items-start mb-1 before:absolute before:left-2 before:h-full before:px-[1.5px] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 after:w-2 after:h-2 after:border-4 after:box-content after:border-slate-50 after:rounded-full after:-translate-x-1/2 after:translate-y-1.5",
           activity.status === enumActivityStatus.DONE &&
             activity.resolution !== enumActivityResolution.FAILURE &&
             "after:bg-green-600",
@@ -93,7 +95,8 @@ export const TimelineElement: React.FC<TimelineElementProps> = ({
           activity.status === enumActivityStatus.FAILED ||
             (activity.resolution == enumActivityResolution.FAILURE &&
               "after:bg-red-600"),
-          colorClass ? `before:${colorClass}` : "before:bg-slate-300"
+          colorClass ? `before:${colorClass}` : "before:bg-slate-300",
+          !renderColorIndicatorForLastItem && "group-last:before:hidden"
         )}
       >
         <div className="flex gap-x-2 items-center pt-1">
