@@ -25,16 +25,16 @@ export const PatientInfo: FC<PatientInfoProps> = ({ patientId }) => {
     >
       <DataList.Item>
         <DataList.Label minWidth="88px">Name</DataList.Label>
-        <DataList.Value>{data.name}</DataList.Value>
+        <DataList.Value>{data.profile.name}</DataList.Value>
       </DataList.Item>
       <DataList.Item>
         <DataList.Label minWidth="88px">Mobile phone</DataList.Label>
-        <DataList.Value>{data.mobile_phone}</DataList.Value>
+        <DataList.Value>{data.profile.mobile_phone}</DataList.Value>
       </DataList.Item>
       <DataList.Item>
         <DataList.Label minWidth="88px">Email</DataList.Label>
         <DataList.Value>
-          <Link href={data.email}>{data.email}</Link>
+          <Link href={data.profile.email}>{data.profile.email}</Link>
         </DataList.Value>
       </DataList.Item>
     </DataList.Root>

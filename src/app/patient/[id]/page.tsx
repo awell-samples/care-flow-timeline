@@ -39,7 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
         enumActivityObjectType.CHECKLIST,
       ],
     }),
-    []
+    [params]
   );
 
   useEffect(() => {
