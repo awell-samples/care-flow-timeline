@@ -1,5 +1,5 @@
 "use client";
-import { usePathway } from "../../hooks";
+import { usePathway } from "../../../../hooks";
 import { Text } from "@radix-ui/themes";
 import clsx from "clsx";
 import { FC } from "react";
@@ -30,7 +30,10 @@ const CareFlowItem: FC<CareFlowItemProps> = ({
     >
       {colorClass && (
         <span
-          className={clsx("w-2.5 h-2.5 rounded-full", colorClass && colorClass)}
+          className={clsx(
+            "w-2.5 h-2.5 rounded-full",
+            colorClass && `bg-${colorClass}`
+          )}
         />
       )}
       <Text size="2" weight="medium" className="text-slate-800">

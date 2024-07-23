@@ -4,12 +4,12 @@ import { usePatient, usePatientPathways } from "../../../hooks";
 import { Card, Heading, Tabs, Text } from "@radix-ui/themes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isEmpty, isNil } from "lodash";
-import { CareFlowList } from "../../../components/CareFlowList";
 import { getColorClasses } from "../../../lib/utils/getColorClasses";
 import {
   PatientTimeline,
   SingleTimeline,
   StakeholdersFilter,
+  CareFlowList,
 } from "./components/";
 
 export default function Page({ params }: { params: { id: string } }) {

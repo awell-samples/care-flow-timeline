@@ -74,6 +74,7 @@ export const SingleTimeline: FC<SingleTimelineProps> = ({
           activity={activity}
           refresh={refreshActivities}
           colorClass={colorClass}
+          renderColorIndicatorForLastItem={true}
         />
       ))}
     </Timeline>

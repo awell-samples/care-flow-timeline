@@ -1,14 +1,14 @@
 const tailwindColors = [
-  "bg-red-200",
-  "bg-blue-200",
-  "bg-green-200",
-  "bg-yellow-200",
-  "bg-purple-200",
-  "bg-pink-200",
-  "bg-indigo-200",
-  "bg-teal-200",
-  "bg-orange-200",
-  "bg-cyan-200",
+  "red-200",
+  "blue-200",
+  "green-200",
+  "yellow-200",
+  "purple-200",
+  "pink-200",
+  "indigo-200",
+  "teal-200",
+  "orange-200",
+  "cyan-200",
 ];
 
 export const getColorClasses = (strings: string[]): string[] => {
