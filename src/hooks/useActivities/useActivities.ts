@@ -41,7 +41,6 @@ export const useActivities: UseActivitiesHook = ({
 
       const params = new URLSearchParams();
       params.append("patient_id", filters.patient_id);
-
       if (!isEmpty(filters?.activity_type)) {
         filters.activity_type.forEach((type) =>
           params.append("activity_type", type)

@@ -2,14 +2,20 @@
 import { enumActivityObjectType } from "@awell-health/awell-sdk";
 import { usePatient, usePatientPathways } from "../../../hooks";
 import { Card, Heading, Tabs, Text } from "@radix-ui/themes";
-import { useEffect, useMemo, useState } from "react";
-import { isEmpty } from "lodash";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { isEmpty, isNil } from "lodash";
 import { CareFlowList } from "../../../components/CareFlowList";
 import { getColorClasses } from "../../../lib/utils/getColorClasses";
-import { SingleTimeline } from "./SingleTimeline";
-import { PatientTimeline } from "./PatientTimeline";
+import {
+  PatientTimeline,
+  SingleTimeline,
+  StakeholdersFilter,
+} from "./components/";
 
 export default function Page({ params }: { params: { id: string } }) {
+  const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
+    null
+  );
   const [selectedCareFlowId, setSelectedCareFlowId] = useState<string | null>(
     null
   );
@@ -57,6 +63,27 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }, [patientCareFlows]);
 
+  const handleStakeholderFilter = useCallback(
+    (stakeholderId: string | null) => {
+      setSelectedStakeholder(stakeholderId === "all" ? null : stakeholderId);
+    },
+    []
+  );
+
+  const releaseIds = useMemo(() => {
+    if (!isNil(selectedCareFlowId))
+      return [
+        patientCareFlows.find((_) => _.id === selectedCareFlowId).release_id,
+      ];
+
+    return Array.from(new Set(patientCareFlows.map((_) => _.release_id)));
+  }, [patientCareFlows, selectedCareFlowId]);
+
+  const handleCareFlowSelection = (id: string) => {
+    setSelectedStakeholder(null);
+    setSelectedCareFlowId(id);
+  };
+
   return (
     <div className="max-w-6xl mx-auto py-12">
       <Card className="p-8">
@@ -73,20 +100,29 @@ export default function Page({ params }: { params: { id: string } }) {
           </Tabs.List>
 
           <Tabs.Content value="activity">
-            <div className="flex flex-col mb-6">
-              <Heading as="h2" size="5">
-                Care flow activity
-              </Heading>
-              <Text size="3">
-                Events executed in care flows the patient is enrolled in.
-              </Text>
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex flex-col">
+                <Heading as="h2" size="5">
+                  Care flow activity
+                </Heading>
+                <Text size="3">
+                  Events executed in care flows the patient is enrolled in.
+                </Text>
+              </div>
+              {!loadingPatientCareFlows && (
+                <StakeholdersFilter
+                  releaseIds={releaseIds}
+                  value={selectedStakeholder}
+                  onSelect={handleStakeholderFilter}
+                />
+              )}
             </div>
             <div className="flex gap-x-12">
               <div className="flex-none w-[360px]">
                 <CareFlowList
                   careFlowIds={uniquecareFlowIdsWithColors.map((_) => _.id)}
                   value={selectedCareFlowId}
-                  onSelect={setSelectedCareFlowId}
+                  onSelect={handleCareFlowSelection}
                   colorClasses={uniquecareFlowIdsWithColors}
                 />
               </div>
@@ -95,14 +131,16 @@ export default function Page({ params }: { params: { id: string } }) {
                 {selectedCareFlowId === null && patient && (
                   <PatientTimeline
                     patientId={params.id}
-                    filters={filters}
+                    queryFilters={filters}
+                    frontEndFilters={{ stakeholder: selectedStakeholder }}
                     colorClasses={uniquecareFlowIdsWithColors}
                   />
                 )}
                 {selectedCareFlowId !== null && (
                   <SingleTimeline
                     careFlowId={selectedCareFlowId}
-                    filters={filters}
+                    queryFilters={filters}
+                    frontEndFilters={{ stakeholder: selectedStakeholder }}
                     colorClass={
                       uniquecareFlowIdsWithColors.find(
                         (_) => _.id === selectedCareFlowId

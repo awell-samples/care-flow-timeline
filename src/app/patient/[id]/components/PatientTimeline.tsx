@@ -1,29 +1,39 @@
 "use client";
-import { Timeline, TimelineElement } from "../../../components/Timeline";
-import { useActivities } from "../../../hooks";
+import { enumActivityObjectType } from "@awell-health/awell-sdk";
+import { Timeline, TimelineElement } from "../../../../components/Timeline";
+import { useActivities } from "../../../../hooks";
 import { Spinner } from "@radix-ui/themes";
 import { FC, useMemo } from "react";
 
 interface PatientTimelineProps {
   patientId: string;
-  filters?: {
+  queryFilters?: {
     activity_status?: string[];
     activity_type?: string[];
+  };
+  frontEndFilters?: {
+    stakeholder?: string;
   };
   colorClasses: { id: string; colorClass: string }[];
 }
 
 export const PatientTimeline: FC<PatientTimelineProps> = ({
   patientId,
-  filters,
+  queryFilters,
+  frontEndFilters,
   colorClasses,
 }) => {
   const memoizedFilters = useMemo(
     () => ({
       patient_id: patientId,
-      ...(filters && filters),
+      ...(queryFilters && queryFilters),
     }),
-    [patientId, filters]
+    [patientId, queryFilters]
+  );
+
+  const memoizedStakeholdersFilters = useMemo(
+    () => frontEndFilters?.stakeholder,
+    [frontEndFilters]
   );
 
   const {
@@ -34,6 +44,21 @@ export const PatientTimeline: FC<PatientTimelineProps> = ({
   } = useActivities({
     filters: memoizedFilters,
   });
+
+  const filteredActivities = useMemo(() => {
+    if (!memoizedStakeholdersFilters) return activities;
+
+    if (memoizedStakeholdersFilters === "Patient")
+      return activities.filter(
+        (activity) =>
+          activity.indirect_object?.type === enumActivityObjectType.PATIENT
+      );
+
+    return activities.filter(
+      (activity) =>
+        activity.indirect_object?.name === memoizedStakeholdersFilters
+    );
+  }, [activities, memoizedStakeholdersFilters]);
 
   if (loadingActivities) {
     return (
@@ -46,7 +71,7 @@ export const PatientTimeline: FC<PatientTimelineProps> = ({
   return (
     <div className="mb-4">
       <Timeline>
-        {activities.map((activity) => (
+        {filteredActivities.map((activity) => (
           <TimelineElement
             key={activity.id}
             activity={activity}

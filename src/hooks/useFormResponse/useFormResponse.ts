@@ -1,5 +1,5 @@
 import { Answer } from "@awell-health/awell-sdk";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type UseFormResponseHook = ({
   careFlowId,
@@ -21,27 +21,27 @@ export const useFormResponse: UseFormResponseHook = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const url = `/api/care-flow/${careFlowId}/form-response/${activityId}`;
-        const resp = await fetch(url);
-        const { data, error } = await resp.json();
-        if (error || !data.success) {
-          throw new Error("Failed to fetch");
-        }
-
-        const response = data.response.answers as Answer[];
-
-        setData(response);
-      } catch (error) {
-        setError(error as Error);
-      } finally {
-        setLoading(false);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = `/api/care-flow/${careFlowId}/form-response/${activityId}`;
+      const resp = await fetch(url);
+      const { data, error } = await resp.json();
+      if (error || !data.success) {
+        throw new Error("Failed to fetch");
       }
-    };
 
+      const response = data.response.answers as Answer[];
+
+      setData(response);
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, [careFlowId, activityId]);
+
+  useEffect(() => {
     fetchData();
   }, [careFlowId, activityId]);
 
