@@ -63,7 +63,7 @@ export const useActivities: UseActivitiesHook = ({
     } finally {
       setLoading(false);
     }
-  }, [pagination, sorting, filters]);
+  }, [filters]);
 
   useEffect(() => {
     fetchData();

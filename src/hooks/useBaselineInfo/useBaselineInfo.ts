@@ -36,7 +36,7 @@ export const useBaselineInfo: UseBaselineInfoHook = ({ careFlowId }) => {
     if (!isEmpty(careFlowId)) {
       fetchData();
     }
-  }, [careFlowId]);
+  }, [careFlowId, fetchData]);
 
   return { data, loading, error };
 };

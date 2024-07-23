@@ -34,7 +34,7 @@ export const useForm: UseFormHook = (formId) => {
 
   useEffect(() => {
     fetchData();
-  }, [formId]);
+  }, [formId, fetchData]);
 
   return { data, loading, error };
 };

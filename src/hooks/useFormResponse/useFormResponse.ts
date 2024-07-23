@@ -43,7 +43,7 @@ export const useFormResponse: UseFormResponseHook = ({
 
   useEffect(() => {
     fetchData();
-  }, [careFlowId, activityId]);
+  }, [careFlowId, activityId, fetchData]);
 
   return { data, loading, error };
 };
