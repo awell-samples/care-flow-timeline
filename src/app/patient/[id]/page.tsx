@@ -1,7 +1,7 @@
 "use client";
 import { enumActivityObjectType } from "@awell-health/awell-sdk";
 import { usePatient, usePatientPathways } from "../../../hooks";
-import { Card, Heading, Tabs, Text } from "@radix-ui/themes";
+import { Button, Card, Heading, Tabs, Text, Tooltip } from "@radix-ui/themes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isEmpty, isNil } from "lodash";
 import { getColorClasses } from "../../../lib/utils/getColorClasses";
@@ -11,6 +11,7 @@ import {
   StakeholdersFilter,
   CareFlowList,
 } from "./components/";
+import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
@@ -109,13 +110,27 @@ export default function Page({ params }: { params: { id: string } }) {
                   Events executed in care flows the patient is enrolled in.
                 </Text>
               </div>
-              {!loadingPatientCareFlows && (
-                <StakeholdersFilter
-                  releaseIds={releaseIds}
-                  value={selectedStakeholder}
-                  onSelect={handleStakeholderFilter}
-                />
-              )}
+              <div className="flex gap-x-2">
+                {!loadingPatientCareFlows && (
+                  <StakeholdersFilter
+                    releaseIds={releaseIds}
+                    value={selectedStakeholder}
+                    onSelect={handleStakeholderFilter}
+                  />
+                )}
+                <Tooltip content="Open Single Timeline view">
+                  <Button variant="soft" asChild>
+                    {selectedCareFlowId && (
+                      <a
+                        href={`/care-flow/${selectedCareFlowId}`}
+                        title="Go back"
+                      >
+                        <OpenInNewWindowIcon />
+                      </a>
+                    )}
+                  </Button>
+                </Tooltip>
+              </div>
             </div>
             <div className="flex gap-x-12">
               <div className="flex-none w-[360px]">

@@ -68,8 +68,15 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const filteredActivities = useMemo(() => {
     if (!selectedStakeholder) return activities;
+
+    if (selectedStakeholder === "Patient")
+      return activities.filter(
+        (activity) =>
+          activity.indirect_object?.type === enumActivityObjectType.PATIENT
+      );
+
     return activities.filter(
-      (activity) => activity.indirect_object?.id === selectedStakeholder
+      (activity) => activity.indirect_object?.name === selectedStakeholder
     );
   }, [activities, selectedStakeholder]);
 
@@ -79,7 +86,7 @@ export default function Page({ params }: { params: { id: string } }) {
         {/* Heading */}
         <div className="flex items-center gap-2 mb-4">
           <Button variant="outline" asChild>
-            <a href="#" title="Task List">
+            <a href={`/patient/${patientId}`} title="Go back">
               <CaretLeftIcon /> Go back
             </a>
           </Button>
@@ -100,7 +107,10 @@ export default function Page({ params }: { params: { id: string } }) {
               <Select.Content position="popper">
                 <Select.Item value="all">All stakeholders</Select.Item>
                 {stakeholders.map((stakeholder) => (
-                  <Select.Item value={stakeholder.id} key={stakeholder.id}>
+                  <Select.Item
+                    value={stakeholder.label.en}
+                    key={stakeholder.id}
+                  >
                     {stakeholder.label.en}
                   </Select.Item>
                 ))}

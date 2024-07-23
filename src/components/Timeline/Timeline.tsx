@@ -96,7 +96,9 @@ export const TimelineElement: React.FC<TimelineElementProps> = ({
           activity.status === enumActivityStatus.FAILED ||
             (activity.resolution == enumActivityResolution.FAILURE &&
               "after:bg-red-600"),
-          colorClass ? `before:border-${colorClass}` : "before:bg-slate-300",
+          colorClass
+            ? `before:border-${colorClass}`
+            : "before:border-slate-200",
           !renderColorIndicatorForLastItem && "group-last:before:hidden"
         )}
       >
