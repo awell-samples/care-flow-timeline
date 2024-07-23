@@ -29,8 +29,6 @@ export const StakeholdersFilter: FC<StakeholdersFilterProps> = ({
     [onSelect]
   );
 
-  console.log(value);
-
   return (
     <Select.Root
       defaultValue="all"
