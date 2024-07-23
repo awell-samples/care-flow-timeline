@@ -7,3 +7,7 @@ export { useBaselineInfo } from "./useBaselineInfo";
 export { useClinicalNote } from "./useClinicalNote";
 export { useChecklist } from "./useChecklist";
 export { usePatient } from "./usePatient";
+export { useActivities } from "./useActivities";
+export { usePathwayDefinitions } from "./usePathwayDefinitions";
+export { useForm } from "./useForm";
+export { usePatientPathways } from "./usePatientPathways";

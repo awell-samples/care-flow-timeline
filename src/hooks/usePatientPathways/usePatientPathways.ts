@@ -1,15 +1,15 @@
-import { User } from "@awell-health/awell-sdk";
+import { PatientPathway } from "@awell-health/awell-sdk";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
 
-type UsePatientHook = (id: string) => {
-  data?: User;
+type UsePatientPathwaysHook = (patientId: string) => {
+  data: PatientPathway[];
   error: null | Error;
   loading: boolean;
 };
 
-export const usePatient: UsePatientHook = (id) => {
-  const [data, setData] = useState<User>(undefined);
+export const usePatientPathways: UsePatientPathwaysHook = (patientId) => {
+  const [data, setData] = useState<PatientPathway[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -17,15 +17,15 @@ export const usePatient: UsePatientHook = (id) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const resp = await fetch(`/api/patient/${id}`);
+        const resp = await fetch(`/api/patient/${patientId}/care-flows`);
         const { data, error } = await resp.json();
         if (error || !data.success) {
           throw new Error("Failed to fetch");
         }
 
-        const patientData = data.patient as User;
+        const patientPathwaysData = data.patientPathways as PatientPathway[];
 
-        setData(patientData);
+        setData(patientPathwaysData);
       } catch (error) {
         setError(error as Error);
       } finally {
@@ -33,10 +33,10 @@ export const usePatient: UsePatientHook = (id) => {
       }
     };
 
-    if (!isEmpty(id)) {
+    if (!isEmpty(patientId)) {
       fetchData();
     }
-  }, [id]);
+  }, [patientId]);
 
   return { data, loading, error };
 };

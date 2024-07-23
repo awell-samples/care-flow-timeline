@@ -2,10 +2,7 @@ import { type NextRequest } from "next/server";
 
 import { AwellSdk } from "@awell-health/awell-sdk";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string; activityId: string } }
-) {
+export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
   const releaseIdsAsString = searchParams.get("release_ids");

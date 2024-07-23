@@ -32,7 +32,7 @@ export const useHostedPagesActivitySession: UseHostedPagesActivitySessionHook =
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            pathwayId: careFlowId,
+            careFlowId,
             stakeholderId,
           }),
         });

@@ -1,5 +1,5 @@
 import { Card, Heading, Spinner, Text } from "@radix-ui/themes";
-import { useClinicalNote } from "../../hooks";
+import { useClinicalNote } from "../../../hooks";
 import * as Accordion from "@radix-ui/react-accordion";
 import React from "react";
 import clsx from "clsx";

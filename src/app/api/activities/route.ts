@@ -1,10 +1,12 @@
+import { type NextRequest } from "next/server";
+
 import { AwellSdk } from "@awell-health/awell-sdk";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const careFlowId = params.id;
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const patientId = searchParams.get("patient_id");
+  const activityTypes = searchParams.getAll("activity_type");
 
   const sdk = new AwellSdk({
     apiUrl: process.env.AWELL_API_URL,
@@ -12,9 +14,22 @@ export async function GET(
   });
 
   const res = await sdk.orchestration.query({
-    pathwayActivities: {
+    activities: {
       __args: {
-        pathway_id: careFlowId,
+        pagination: {
+          count: 20,
+          offset: 0,
+        },
+        sorting: {
+          field: "date",
+          direction: "desc",
+        },
+        filters: {
+          patient_id: { eq: patientId },
+          activity_type: {
+            in: activityTypes,
+          },
+        },
       },
       success: true,
       activities: {
@@ -30,6 +45,12 @@ export async function GET(
         public: true,
         session_id: true,
         icon_url: true,
+        form: {
+          questions: {
+            __scalar: true,
+          },
+        },
+        form_display_mode: true,
         action_component: {
           title: true,
         },
@@ -46,7 +67,7 @@ export async function GET(
     },
   });
 
-  const data = res.pathwayActivities;
+  const data = res.activities;
 
   return Response.json({ data });
 }

@@ -1,15 +1,14 @@
-import { User } from "@awell-health/awell-sdk";
+import { Answer, Form } from "@awell-health/awell-sdk";
 import { useState, useEffect } from "react";
-import { isEmpty } from "lodash";
 
-type UsePatientHook = (id: string) => {
-  data?: User;
+type UseFormHook = (formId: string) => {
+  data: Form;
   error: null | Error;
   loading: boolean;
 };
 
-export const usePatient: UsePatientHook = (id) => {
-  const [data, setData] = useState<User>(undefined);
+export const useForm: UseFormHook = (formId) => {
+  const [data, setData] = useState<Form | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -17,15 +16,16 @@ export const usePatient: UsePatientHook = (id) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const resp = await fetch(`/api/patient/${id}`);
+        const url = `/api/activities/form/${formId}`;
+        const resp = await fetch(url);
         const { data, error } = await resp.json();
         if (error || !data.success) {
           throw new Error("Failed to fetch");
         }
 
-        const patientData = data.patient as User;
+        const form = data.form as Form;
 
-        setData(patientData);
+        setData(form);
       } catch (error) {
         setError(error as Error);
       } finally {
@@ -33,10 +33,8 @@ export const usePatient: UsePatientHook = (id) => {
       }
     };
 
-    if (!isEmpty(id)) {
-      fetchData();
-    }
-  }, [id]);
+    fetchData();
+  }, [formId]);
 
   return { data, loading, error };
 };

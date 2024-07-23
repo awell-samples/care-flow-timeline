@@ -1,5 +1,5 @@
-import { useHostedPagesActivitySession } from "../../hooks/useHostedPagesActivitySession";
-import { Activity, enumActivitySubjectType } from "@awell-health/awell-sdk";
+import { useHostedPagesActivitySession } from "../../../hooks/useHostedPagesActivitySession";
+import { Activity, enumActivityObjectType } from "@awell-health/awell-sdk";
 import { Dialog, Button, Flex, Spinner } from "@radix-ui/themes";
 import { useState } from "react";
 
@@ -65,9 +65,11 @@ export const CompleteTask: React.FC<CompleteTaskProps> = ({
 
 function getStakeholderId(activity: Activity) {
   switch (activity.indirect_object?.type) {
-    case enumActivitySubjectType.STAKEHOLDER:
+    case enumActivityObjectType.STAKEHOLDER:
       return activity.indirect_object.id;
-    case enumActivitySubjectType.PLUGIN:
+    case enumActivityObjectType.PATIENT:
+      return activity.indirect_object.id;
+    case enumActivityObjectType.PLUGIN:
       if (activity.stakeholders.length > 0) return activity.stakeholders[0].id;
     default:
       return "unknown";

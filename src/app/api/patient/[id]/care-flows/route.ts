@@ -12,21 +12,21 @@ export async function GET(
   });
 
   const res = await sdk.orchestration.query({
-    patient: {
+    patientPathways: {
       __args: {
-        id: patientId,
+        patient_id: patientId,
       },
       success: true,
-      patient: {
-        id: true,
-        profile: {
+      patientPathways: {
+        __scalar: true,
+        baseline_info: {
           __scalar: true,
         },
       },
     },
   });
 
-  const data = res.patient;
+  const data = res.patientPathways;
 
   return Response.json({ data });
 }

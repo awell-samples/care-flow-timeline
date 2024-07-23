@@ -5,6 +5,19 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/lib/utils/getColorClasses.ts",
+  ],
+  safelist: [
+    "before:bg-red-200",
+    "before:bg-blue-200",
+    "before:bg-green-200",
+    "before:bg-yellow-200",
+    "before:bg-purple-200",
+    "before:bg-pink-200",
+    "before:bg-indigo-200",
+    "before:bg-teal-200",
+    "before:bg-orange-200",
+    "before:bg-cyan-200",
   ],
   theme: {
     extend: {
