@@ -1,10 +1,15 @@
 import { type Stakeholder } from "@awell-health/awell-sdk";
+import _ from "lodash";
 import { useState, useEffect, useCallback } from "react";
 
 type UseStakeholdersByReleaseIdsHook = ({
   releaseIds,
+  opts,
 }: {
   releaseIds: string[];
+  opts?: {
+    unique?: boolean;
+  };
 }) => {
   data: Stakeholder[];
   error: null | Error;
@@ -13,6 +18,7 @@ type UseStakeholdersByReleaseIdsHook = ({
 
 export const useStakeholdersByReleaseIds: UseStakeholdersByReleaseIdsHook = ({
   releaseIds,
+  opts,
 }) => {
   const [data, setData] = useState<Stakeholder[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,9 +34,13 @@ export const useStakeholdersByReleaseIds: UseStakeholdersByReleaseIdsHook = ({
       if (error || !data.success) {
         throw new Error("Failed to fetch");
       }
-      const response = data.stakeholders as Stakeholder[];
+      let stakeholdersData = data.stakeholders as Stakeholder[];
 
-      setData(response);
+      if (opts.unique) {
+        stakeholdersData = _.uniqBy(stakeholdersData, "definition_id");
+      }
+
+      setData(stakeholdersData);
     } catch (error) {
       setError(error as Error);
     } finally {

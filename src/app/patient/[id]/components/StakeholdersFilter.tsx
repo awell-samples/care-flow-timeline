@@ -20,7 +20,12 @@ export const StakeholdersFilter: FC<StakeholdersFilterProps> = ({
     data: stakeholders,
     loading: loadingStakeholders,
     error: stakeholdersError,
-  } = useStakeholdersByReleaseIds({ releaseIds: releaseIdsMemoized });
+  } = useStakeholdersByReleaseIds({
+    releaseIds: releaseIdsMemoized,
+    opts: {
+      unique: true,
+    },
+  });
 
   const handleSelect = useCallback(
     (value: string) => {
