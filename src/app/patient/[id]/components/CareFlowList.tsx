@@ -23,9 +23,10 @@ const CareFlowItem: FC<CareFlowItemProps> = ({
   return (
     <div
       className={clsx(
-        "flex px-4 py-3 cursor-pointer gap-x-4 items-center border border-transparent rounded-lg hover:bg-slate-50 hover:border-slate-100",
-        isSelected &&
-          "border-slate-300 bg-slate-100 hover:border-slate-300 hover:bg-slate-100"
+        "flex px-4 py-3 cursor-pointer gap-x-4 items-center border rounded-lg",
+        !isSelected &&
+          "border-transparent hover:border-slate-200 hover:bg-slate-50",
+        isSelected && "border-blue-200 bg-blue-50"
       )}
       onClick={onSelect}
       data-careflow-id={careFlow?.id}
