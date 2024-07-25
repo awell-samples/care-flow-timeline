@@ -28,7 +28,7 @@ type UseActivitiesHook = ({
 
 export const useActivities: UseActivitiesHook = ({
   pagination,
-  sorting,
+  sorting = { field: "date", direction: "asc" },
   filters,
 }) => {
   const [data, setData] = useState<Activity[]>([]);
@@ -40,12 +40,16 @@ export const useActivities: UseActivitiesHook = ({
       setLoading(true);
 
       const params = new URLSearchParams();
+
       params.append("patient_id", filters.patient_id);
       if (!isEmpty(filters?.activity_type)) {
         filters.activity_type.forEach((type) =>
           params.append("activity_type", type)
         );
       }
+
+      params.append("sorting_field", sorting.field);
+      params.append("sorting_direction", sorting.direction);
 
       const url = `/api/activities?${params.toString()}`;
 
@@ -63,7 +67,7 @@ export const useActivities: UseActivitiesHook = ({
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [filters, sorting]);
 
   useEffect(() => {
     fetchData();

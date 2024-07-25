@@ -14,6 +14,10 @@ interface PatientTimelineProps {
   frontEndFilters?: {
     stakeholder?: string;
   };
+  sorting?: {
+    field?: string;
+    direction?: string;
+  };
   colorClasses: { id: string; colorClass: string }[];
 }
 
@@ -21,6 +25,7 @@ export const PatientTimeline: FC<PatientTimelineProps> = ({
   patientId,
   queryFilters,
   frontEndFilters,
+  sorting,
   colorClasses,
 }) => {
   const memoizedFilters = useMemo(
@@ -43,6 +48,7 @@ export const PatientTimeline: FC<PatientTimelineProps> = ({
     refresh: refreshActivities,
   } = useActivities({
     filters: memoizedFilters,
+    sorting,
   });
 
   const filteredActivities = useMemo(() => {
@@ -77,7 +83,7 @@ export const PatientTimeline: FC<PatientTimelineProps> = ({
             activity={activity}
             refresh={refreshActivities}
             colorClass={
-              colorClasses.find((c) => c.id === activity.stream_id).colorClass
+              colorClasses.find((c) => c.id === activity.stream_id)?.colorClass
             }
             renderColorIndicatorForLastItem={true}
           />

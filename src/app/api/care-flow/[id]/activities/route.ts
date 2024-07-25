@@ -1,10 +1,15 @@
 import { AwellSdk } from "@awell-health/awell-sdk";
+import { type NextRequest } from "next/server";
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const careFlowId = params.id;
+
+  const searchParams = request.nextUrl.searchParams;
+  const sortingField = searchParams.get("sorting_field");
+  const sortingDirection = searchParams.get("sorting_direction");
 
   const sdk = new AwellSdk({
     apiUrl: process.env.AWELL_API_URL,
@@ -15,6 +20,10 @@ export async function GET(
     pathwayActivities: {
       __args: {
         pathway_id: careFlowId,
+        sorting: {
+          field: sortingField,
+          direction: sortingDirection,
+        },
       },
       success: true,
       activities: {

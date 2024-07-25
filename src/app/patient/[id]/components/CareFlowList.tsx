@@ -1,6 +1,6 @@
 "use client";
 import { usePathway } from "../../../../hooks";
-import { Text } from "@radix-ui/themes";
+import { Spinner, Text } from "@radix-ui/themes";
 import clsx from "clsx";
 import { FC } from "react";
 
@@ -36,9 +36,19 @@ const CareFlowItem: FC<CareFlowItemProps> = ({
           )}
         />
       )}
-      <Text size="2" weight="medium" className="text-slate-800">
-        {loading === false ? careFlow.title : "Loading"}
-      </Text>
+      <div className="flex flex-col">
+        {loading && <Spinner size="1" />}
+        {!loading && (
+          <>
+            <Text size="2" weight="medium" className="text-slate-800">
+              {loading === false ? careFlow.title : "Loading"}
+            </Text>
+            <Text size="1" weight="medium" className="text-slate-400">
+              Started on {new Date(careFlow.start_date).toLocaleDateString()}
+            </Text>
+          </>
+        )}
+      </div>
     </div>
   );
 };

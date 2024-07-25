@@ -14,6 +14,10 @@ interface SingleTimelineProps {
   frontEndFilters?: {
     stakeholder?: string;
   };
+  sorting?: {
+    field?: string;
+    direction?: string;
+  };
   colorClass?: string;
 }
 
@@ -21,14 +25,16 @@ export const SingleTimeline: FC<SingleTimelineProps> = ({
   careFlowId,
   queryFilters,
   frontEndFilters,
+  sorting,
   colorClass,
 }) => {
   const memoizedInput = useMemo(
     () => ({
       careFlowId,
       filters: queryFilters,
+      sorting,
     }),
-    [careFlowId, queryFilters]
+    [careFlowId, queryFilters, sorting]
   );
 
   const memoizedStakeholdersFilters = useMemo(

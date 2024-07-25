@@ -11,7 +11,11 @@ import {
   StakeholdersFilter,
   CareFlowList,
 } from "./components/";
-import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  OpenInNewWindowIcon,
+} from "@radix-ui/react-icons";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
@@ -22,6 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
   );
   const [uniquecareFlowIdsWithColors, setUniquecareFlowIdsWithColors] =
     useState<{ id: string; colorClass: string }[]>([]);
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
   const {
     data: patient,
@@ -47,6 +52,14 @@ export default function Page({ params }: { params: { id: string } }) {
       ],
     }),
     [params]
+  );
+
+  const sorting = useMemo(
+    () => ({
+      field: "date",
+      direction: sortDirection,
+    }),
+    [sortDirection]
   );
 
   useEffect(() => {
@@ -111,6 +124,24 @@ export default function Page({ params }: { params: { id: string } }) {
                 </Text>
               </div>
               <div className="flex gap-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (sortDirection === "asc") {
+                      setSortDirection("desc");
+                      return;
+                    }
+
+                    setSortDirection("asc");
+                  }}
+                >
+                  {sortDirection === "asc" ? (
+                    <ArrowDownIcon />
+                  ) : (
+                    <ArrowUpIcon />
+                  )}{" "}
+                  Sort
+                </Button>
                 {!loadingPatientCareFlows && (
                   <StakeholdersFilter
                     releaseIds={releaseIds}
@@ -148,6 +179,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     patientId={params.id}
                     queryFilters={filters}
                     frontEndFilters={{ stakeholder: selectedStakeholder }}
+                    sorting={sorting}
                     colorClasses={uniquecareFlowIdsWithColors}
                   />
                 )}
@@ -156,6 +188,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     careFlowId={selectedCareFlowId}
                     queryFilters={filters}
                     frontEndFilters={{ stakeholder: selectedStakeholder }}
+                    sorting={sorting}
                     colorClass={
                       uniquecareFlowIdsWithColors.find(
                         (_) => _.id === selectedCareFlowId

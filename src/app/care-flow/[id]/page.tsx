@@ -6,7 +6,11 @@ import {
   useStakeholdersByReleaseIds,
 } from "../../../hooks";
 import { enumActivityObjectType } from "@awell-health/awell-sdk";
-import { CaretLeftIcon } from "@radix-ui/react-icons";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  CaretLeftIcon,
+} from "@radix-ui/react-icons";
 import { Card, Button, Heading, Spinner, Select } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { PatientInfo } from "../../../components/PatientInfo";
@@ -17,6 +21,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
     null
   );
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
   const { data: careFlowData, loading: loadingPathway } = usePathway(params.id);
   const filters = useMemo(
@@ -32,6 +37,14 @@ export default function Page({ params }: { params: { id: string } }) {
     []
   );
 
+  const sorting = useMemo(
+    () => ({
+      field: "date",
+      direction: sortDirection,
+    }),
+    [sortDirection]
+  );
+
   const {
     data: activities,
     loading: loadingActivities,
@@ -40,6 +53,7 @@ export default function Page({ params }: { params: { id: string } }) {
   } = usePathwayActivities({
     careFlowId: params.id,
     filters: filters,
+    sorting,
   });
 
   useEffect(() => {
@@ -99,23 +113,40 @@ export default function Page({ params }: { params: { id: string } }) {
             <Heading as="h2" size="5">
               Activity Feed
             </Heading>
-            <Select.Root
-              defaultValue="all"
-              onValueChange={handleStakeholderFilter}
-            >
-              <Select.Trigger />
-              <Select.Content position="popper">
-                <Select.Item value="all">All stakeholders</Select.Item>
-                {stakeholders.map((stakeholder) => (
-                  <Select.Item
-                    value={stakeholder.label.en}
-                    key={stakeholder.id}
-                  >
-                    {stakeholder.label.en}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Root>
+
+            <div className="flex gap-x-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (sortDirection === "asc") {
+                    setSortDirection("desc");
+                    return;
+                  }
+
+                  setSortDirection("asc");
+                }}
+              >
+                {sortDirection === "asc" ? <ArrowDownIcon /> : <ArrowUpIcon />}{" "}
+                Sort
+              </Button>
+              <Select.Root
+                defaultValue="all"
+                onValueChange={handleStakeholderFilter}
+              >
+                <Select.Trigger />
+                <Select.Content position="popper">
+                  <Select.Item value="all">All stakeholders</Select.Item>
+                  {stakeholders.map((stakeholder) => (
+                    <Select.Item
+                      value={stakeholder.label.en}
+                      key={stakeholder.id}
+                    >
+                      {stakeholder.label.en}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Root>
+            </div>
           </div>
           {loadingActivities && (
             <div className="flex justify-center py-8">

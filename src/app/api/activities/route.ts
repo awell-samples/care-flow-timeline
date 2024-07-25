@@ -7,6 +7,8 @@ export async function GET(request: NextRequest) {
 
   const patientId = searchParams.get("patient_id");
   const activityTypes = searchParams.getAll("activity_type");
+  const sortingField = searchParams.get("sorting_field");
+  const sortingDirection = searchParams.get("sorting_direction");
 
   const sdk = new AwellSdk({
     apiUrl: process.env.AWELL_API_URL,
@@ -21,8 +23,8 @@ export async function GET(request: NextRequest) {
           offset: 0,
         },
         sorting: {
-          field: "date",
-          direction: "desc",
+          field: sortingField,
+          direction: sortingDirection,
         },
         filters: {
           patient_id: { eq: patientId },
