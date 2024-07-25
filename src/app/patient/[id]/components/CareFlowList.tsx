@@ -1,34 +1,37 @@
 "use client";
-import { usePathway } from "../../../../hooks";
-import { Spinner, Text } from "@radix-ui/themes";
+import { Pathway } from "@awell-health/awell-sdk";
+import { usePathways } from "../../../../hooks";
+import { Skeleton, Spinner, Text } from "@radix-ui/themes";
 import clsx from "clsx";
 import { FC } from "react";
 
 interface CareFlowItemProps {
-  careFlowId: string;
+  careFlow?: Pathway;
   isSelected: boolean;
   onSelect: () => void;
   colorClass?: string;
+  loading?: boolean;
 }
 
 const CareFlowItem: FC<CareFlowItemProps> = ({
-  careFlowId,
+  careFlow,
   isSelected,
   onSelect,
   colorClass,
+  loading,
 }) => {
-  const { data: careFlow, loading, error } = usePathway(careFlowId);
-
   return (
     <div
       className={clsx(
         "flex px-4 py-3 cursor-pointer gap-x-4 items-center border border-transparent rounded-lg hover:bg-slate-50 hover:border-slate-100",
-        isSelected && "border-slate-200 bg-slate-100"
+        isSelected &&
+          "border-slate-300 bg-slate-100 hover:border-slate-300 hover:bg-slate-100"
       )}
       onClick={onSelect}
-      data-careflow-id={careFlowId}
+      data-careflow-id={careFlow?.id}
     >
-      {colorClass && (
+      {loading && <Spinner size="1" />}
+      {!loading && colorClass && (
         <span
           className={clsx(
             "w-2.5 h-2.5 rounded-full",
@@ -37,17 +40,16 @@ const CareFlowItem: FC<CareFlowItemProps> = ({
         />
       )}
       <div className="flex flex-col">
-        {loading && <Spinner size="1" />}
-        {!loading && (
-          <>
-            <Text size="2" weight="medium" className="text-slate-800">
-              {loading === false ? careFlow.title : "Loading"}
-            </Text>
-            <Text size="1" weight="medium" className="text-slate-400">
-              Started on {new Date(careFlow.start_date).toLocaleDateString()}
-            </Text>
-          </>
-        )}
+        <Text size="2" weight="medium" className="text-slate-800">
+          <Skeleton loading={loading} width="150">
+            {careFlow?.title}
+          </Skeleton>
+        </Text>
+        <Text size="1" weight="medium" className="text-slate-400">
+          <Skeleton loading={loading}>
+            Started on {new Date(careFlow?.start_date).toLocaleDateString()}
+          </Skeleton>
+        </Text>
       </div>
     </div>
   );
@@ -66,6 +68,8 @@ export const CareFlowList: FC<CareFlowListProps> = ({
   onSelect,
   colorClasses,
 }) => {
+  const { data: careFlows, loading, error } = usePathways(careFlowIds);
+
   return (
     <div className="w-full flex flex-col gap-y-1">
       <div
@@ -79,13 +83,15 @@ export const CareFlowList: FC<CareFlowListProps> = ({
           All care flows
         </Text>
       </div>
-      {careFlowIds.sort().map((careFlowId, index) => (
+
+      {careFlowIds.map((careFlowId, index) => (
         <CareFlowItem
-          key={careFlowId}
-          careFlowId={careFlowId}
+          key={index}
+          careFlow={careFlows.find((_) => _.pathway.id === careFlowId)?.pathway}
           isSelected={value === careFlowId}
           onSelect={() => onSelect(careFlowId)}
-          colorClass={colorClasses.find((_) => _.id === careFlowId).colorClass}
+          colorClass={colorClasses.find((_) => _.id === careFlowId)?.colorClass}
+          loading={loading}
         />
       ))}
     </div>

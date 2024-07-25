@@ -11,3 +11,4 @@ export { useActivities } from "./useActivities";
 export { usePathwayDefinitions } from "./usePathwayDefinitions";
 export { useForm } from "./useForm";
 export { usePatientPathways } from "./usePatientPathways";
+export { usePathways } from "./usePathways";

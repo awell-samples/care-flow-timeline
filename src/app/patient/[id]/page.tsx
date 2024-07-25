@@ -93,6 +93,10 @@ export default function Page({ params }: { params: { id: string } }) {
     return Array.from(new Set(patientCareFlows.map((_) => _.release_id)));
   }, [patientCareFlows, selectedCareFlowId]);
 
+  const careFlowIds = useMemo(() => {
+    return uniquecareFlowIdsWithColors.map((_) => _.id);
+  }, [uniquecareFlowIdsWithColors]);
+
   const handleCareFlowSelection = (id: string) => {
     setSelectedStakeholder(null);
     setSelectedCareFlowId(id);
@@ -166,7 +170,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="flex gap-x-12">
               <div className="flex-none w-[360px]">
                 <CareFlowList
-                  careFlowIds={uniquecareFlowIdsWithColors.map((_) => _.id)}
+                  careFlowIds={careFlowIds}
                   value={selectedCareFlowId}
                   onSelect={handleCareFlowSelection}
                   colorClasses={uniquecareFlowIdsWithColors}
@@ -192,7 +196,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     colorClass={
                       uniquecareFlowIdsWithColors.find(
                         (_) => _.id === selectedCareFlowId
-                      ).colorClass
+                      )?.colorClass
                     }
                   />
                 )}
