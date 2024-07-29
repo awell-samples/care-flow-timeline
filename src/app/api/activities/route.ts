@@ -1,12 +1,15 @@
 import { type NextRequest } from "next/server";
 
 import { AwellSdk } from "@awell-health/awell-sdk";
+import { isNil } from "lodash";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
-  const patientId = searchParams.get("patient_id");
   const activityTypes = searchParams.getAll("activity_type");
+  const pathwayDefinitionIds = searchParams.getAll("pathway_definition_id");
+
+  const patientId = searchParams.get("patient_id");
   const sortingField = searchParams.get("sorting_field");
   const sortingDirection = searchParams.get("sorting_direction");
 
@@ -27,9 +30,12 @@ export async function GET(request: NextRequest) {
           direction: sortingDirection,
         },
         filters: {
-          patient_id: { eq: patientId },
+          ...(!isNil(patientId) ? { patient_id: { eq: patientId } } : {}),
           activity_type: {
             in: activityTypes,
+          },
+          pathway_definition_id: {
+            in: pathwayDefinitionIds,
           },
         },
       },
@@ -63,6 +69,9 @@ export async function GET(request: NextRequest) {
           __scalar: true,
         },
         stakeholders: {
+          __scalar: true,
+        },
+        track: {
           __scalar: true,
         },
       },
