@@ -15,9 +15,10 @@ type UseActivitiesHook = ({
     count?: number;
     offset?: number;
   };
-  filters: {
-    patient_id: string;
+  filters?: {
+    patient_id?: string;
     activity_type?: string[];
+    pathway_definition_id?: string[];
   };
 }) => {
   data?: Activity[];
@@ -41,10 +42,19 @@ export const useActivities: UseActivitiesHook = ({
 
       const params = new URLSearchParams();
 
-      params.append("patient_id", filters.patient_id);
+      if (!isEmpty(filters.patient_id)) {
+        params.append("patient_id", filters.patient_id);
+      }
+
       if (!isEmpty(filters?.activity_type)) {
         filters.activity_type.forEach((type) =>
           params.append("activity_type", type)
+        );
+      }
+
+      if (!isEmpty(filters?.pathway_definition_id)) {
+        filters.pathway_definition_id.forEach((type) =>
+          params.append("pathway_definition_id", type)
         );
       }
 
