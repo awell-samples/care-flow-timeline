@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [releaseIds, setReleaseIds] = useState<string[]>([]);
   const [patientId, setPatientId] = useState<string | undefined>(undefined);
   const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(
-    null
+    null,
   );
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
@@ -34,7 +34,7 @@ export default function Page({ params }: { params: { id: string } }) {
         enumActivityObjectType.CHECKLIST,
       ],
     }),
-    []
+    [],
   );
 
   const sorting = useMemo(
@@ -42,7 +42,7 @@ export default function Page({ params }: { params: { id: string } }) {
       field: "date",
       direction: sortDirection,
     }),
-    [sortDirection]
+    [sortDirection],
   );
 
   const {
@@ -86,11 +86,11 @@ export default function Page({ params }: { params: { id: string } }) {
     if (selectedStakeholder === "Patient")
       return activities.filter(
         (activity) =>
-          activity.indirect_object?.type === enumActivityObjectType.PATIENT
+          activity.indirect_object?.type === enumActivityObjectType.PATIENT,
       );
 
     return activities.filter(
-      (activity) => activity.indirect_object?.name === selectedStakeholder
+      (activity) => activity.indirect_object?.name === selectedStakeholder,
     );
   }, [activities, selectedStakeholder]);
 
@@ -98,15 +98,15 @@ export default function Page({ params }: { params: { id: string } }) {
     <div className="max-w-3xl mx-auto py-12">
       <Card>
         {/* Heading */}
-        <div className="flex items-center gap-2 mb-4">
-          <Button variant="outline" asChild>
-            <a href={`/patient/${patientId}`} title="Go back">
-              <CaretLeftIcon /> Go back
-            </a>
-          </Button>
-        </div>
+        {/* <div className="flex items-center gap-2 mb-4"> */}
+        {/*   <Button variant="outline" asChild> */}
+        {/*     <a href={`/patient/${patientId}`} title="Go back"> */}
+        {/*       <CaretLeftIcon /> Go back */}
+        {/*     </a> */}
+        {/*   </Button> */}
+        {/* </div> */}
         {/* Patient info */}
-        {patientId && <PatientInfo patientId={patientId} />}
+        {/* {patientId && <PatientInfo patientId={patientId} />} */}
         {/* Timeline */}
         <div className="mt-8">
           <div className="flex justify-between">

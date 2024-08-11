@@ -15,7 +15,7 @@ type Task = {
 export default function Page({ params }: { params: { id: string } }) {
   const filters = useMemo(
     () => ({
-      pathway_definition_id: ["pkXDImd3WyAp"],
+      pathway_definition_id: ["z3zeHsbnTYRj"],
       activity_type: [
         enumActivityObjectType.FORM,
         enumActivityObjectType.MESSAGE,
@@ -61,7 +61,6 @@ export default function Page({ params }: { params: { id: string } }) {
       const streamId = activity.stream_id;
       const trackId = activity.track.id;
       const trackTitle = activity.track.title;
-
       if (!acc[streamId]) {
         acc[streamId] = {};
       }
@@ -100,8 +99,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
     return tasks;
   }, [activities]);
-
-  console.log(formattedData);
 
   return (
     <div className="max-w-3xl mx-auto py-12">
